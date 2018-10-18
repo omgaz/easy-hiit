@@ -94,10 +94,10 @@ Timer = function (_React$Component3) {_inherits(Timer, _React$Component3);
           React.createElement("div", { className: "motivation final" }, "Almost there!") :
           null,
           React.createElement(Motivation, null),
-          React.createElement("div", { className: "time" },
+          this.state.timer ? React.createElement("div", { className: "time" },
             this.state.seconds < 10 ? "0" : "",
-            this.state.seconds, "s")));
-
+            this.state.seconds, "s") :
+          null));
 
 
     } }]);return Timer;}(React.Component);

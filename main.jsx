@@ -94,10 +94,10 @@ class Timer extends React.Component {
           <div className="motivation final">Almost there!</div>
         ) : null}
         <Motivation />
-        <div className="time">
+        {this.state.timer ? <div className="time">
           {this.state.seconds < 10 ? "0" : ""}
           {this.state.seconds}s
-        </div>
+        </div> : null }
       </React.Fragment>
     );
   }
