@@ -1,11 +1,23 @@
+$color-white:               #fff;
+$color-grey-light:          #f7f7f7;
+$color-grey-mid-light:      #b9b9b9;
+$color-grey-dark:           #7b7b7b;
+$color-black:               #333;
+
+$color-success:             #2bb34a;
+
+
 body,
+button,
 h1 {
   padding: 0;
   margin: 0;
+  color: $color-black;
+  font-family: 'Josefin Sans', sans-serif;
 }
 
 .final {
-  color: green;
+  color: $color-success;
   font-weight: 700;
 }
 
@@ -34,11 +46,20 @@ h1 {
 
 button {
   text-align: center;
-  background-color: white;
-  border: 2px solid black;
+  background-color: $color-white;
+  border: 2px solid $color-black;
   font-weight: 700;
   width: 80px;
   height: 45px;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0 0 2px inset $color-grey-dark;
+  }
+
+  &:active {
+    background-color: $color-grey-light;
+  }
 }
 
 h1 {
