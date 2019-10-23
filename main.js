@@ -1,1 +1,199 @@
-var _createClass=function(){function defineProperties(target,props){for(var i=0;i<props.length;i+=1){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||false;descriptor.configurable=true;if("value"in descriptor){descriptor.writable=true}Object.defineProperty(target,descriptor.key,descriptor)}}return function(Constructor,protoProps,staticProps){if(protoProps){defineProperties(Constructor.prototype,protoProps)}if(staticProps){defineProperties(Constructor,staticProps)}return Constructor}}();function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor)){throw new TypeError("Cannot call a class as a function")}}function _possibleConstructorReturn(self,call){if(!self){throw new ReferenceError("this hasn't been initialised - super() hasn't been called")}return call&&(typeof call==="object"||typeof call==="function")?call:self}function _inherits(subClass,superClass){if(typeof superClass!=="function"&&superClass!==null){throw new TypeError("Super expression must either be null or a function, not "+typeof superClass)}subClass.prototype=Object.create(superClass&&superClass.prototype,{constructor:{value:subClass,enumerable:false,writable:true,configurable:true}});if(superClass){Object.setPrototypeOf?Object.setPrototypeOf(subClass,superClass):subClass.__proto__=superClass}}var defaultTime=60;var Time=React.createContext({seconds:defaultTime,onStart:function onStart(){},onStop:function onStop(){},onReset:function onReset(){},isCountingDown:false});var TimeView=function TimeView(){return(React.createElement(Time.Consumer,null,function(_ref){var seconds=_ref.seconds;return(React.createElement("div",{className:"time"},seconds<10?"0":"",seconds,React.createElement("small",null,"seconds")))}))};var StartButton=function StartButton(){return(React.createElement(Time.Consumer,null,function(_ref2){var onStart=_ref2.onStart,isCountingDown=_ref2.isCountingDown;return(React.createElement("button",{onClick:isCountingDown?function(){}:onStart,disabled:isCountingDown},"start"))}))};var StopButton=function StopButton(){return(React.createElement(Time.Consumer,null,function(_ref3){var onStop=_ref3.onStop,isCountingDown=_ref3.isCountingDown;return(React.createElement("button",{onClick:!isCountingDown?function(){}:onStop,disabled:!isCountingDown},"stop"))}))};var ResetButton=function ResetButton(){return(React.createElement(Time.Consumer,null,function(_ref4){var onReset=_ref4.onReset,isCountingDown=_ref4.isCountingDown;return(isCountingDown&&React.createElement("button",{onClick:onReset},"reset"))}))};var Countdown=function(_React$Component){_inherits(Countdown,_React$Component);function Countdown(props){_classCallCheck(this,Countdown);var _this=_possibleConstructorReturn(this,(Countdown.__proto__||Object.getPrototypeOf(Countdown)).call(this,props));_this.countDown=function(){_this.setState(function(_ref5){var seconds=_ref5.seconds;return{seconds:seconds-1}},function(){return _this.state.seconds<0&&_this.handleStop()})};_this.handleStart=function(cb){var callback=typeof cb==="function"?cb:function(){};if(!_this.state.timer&&_this.state.seconds>0){_this.setState({timer:setInterval(_this.countDown,1000)},callback)}};_this.handleStop=function(cb){var callback=typeof cb==="function"?cb:function(){};clearInterval(_this.state.timer);_this.setState(_this.initialState,callback)};_this.handleReset=function(){var callback=typeof cb==="function"?cb:function(){};_this.handleStop(_this.handleStart)};_this.initialState={seconds:props.seconds||defaultTime,timer:null};_this.state=_this.initialState;return _this}_createClass(Countdown,[{key:"render",value:function render(){var children=this.props.children;return(React.createElement("div",{className:"container"},React.createElement(Time.Provider,{value:{seconds:this.state.seconds,onStart:this.handleStart,onStop:this.handleStop,onReset:this.handleReset,isCountingDown:this.state.timer}},children)))}}]);return Countdown}(React.Component);var App=function(_React$Component2){_inherits(App,_React$Component2);function App(){_classCallCheck(this,App);return _possibleConstructorReturn(this,(App.__proto__||Object.getPrototypeOf(App)).apply(this,arguments))}_createClass(App,[{key:"render",value:function render(){return(React.createElement(Countdown,null,React.createElement(TimeView,null),React.createElement("div",{className:"button-container"},React.createElement(StartButton,null),React.createElement(StopButton,null)),React.createElement("div",{className:"button-container"},React.createElement(ResetButton,null))))}}]);return App}(React.Component);ReactDOM.render(React.createElement(App,null),document.querySelector("#app"));
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+  return obj;
+}
+const defaultTime = 60;
+const defaultRestTime = 10;
+
+const Time = React.createContext({
+  seconds: defaultTime,
+  onStart: () => {},
+  onStop: () => {},
+  onReset: () => {},
+  isCountingDown: false,
+  isResting: false
+});
+
+const TimeView = () =>
+  React.createElement(Time.Consumer, null, ({ seconds }) =>
+    React.createElement(
+      "div",
+      { className: "time" },
+      seconds < 10 ? "0" : "",
+      seconds,
+      React.createElement("small", null, "seconds")
+    )
+  );
+
+const CommandView = () =>
+  React.createElement(Time.Consumer, null, ({ isResting, isCountingDown }) =>
+    React.createElement(
+      "div",
+      { className: "command" },
+      isCountingDown ? (isResting ? "rest" : "work") : "ready?"
+    )
+  );
+
+const StartButton = () =>
+  React.createElement(Time.Consumer, null, ({ onStart, isCountingDown }) =>
+    React.createElement(
+      "button",
+      {
+        onClick: isCountingDown ? () => {} : onStart,
+        disabled: isCountingDown
+      },
+      "start"
+    )
+  );
+
+const StopButton = () =>
+  React.createElement(Time.Consumer, null, ({ onStop, isCountingDown }) =>
+    React.createElement(
+      "button",
+      {
+        onClick: !isCountingDown ? () => {} : onStop,
+        disabled: !isCountingDown
+      },
+      "stop"
+    )
+  );
+
+const ResetButton = () =>
+  React.createElement(
+    Time.Consumer,
+    null,
+    ({ onReset, isCountingDown }) =>
+      isCountingDown &&
+      React.createElement("button", { onClick: onReset }, "reset")
+  );
+
+class Countdown extends React.Component {
+  constructor(props) {
+    super(props);
+    _defineProperty(
+      this,
+      "countDown",
+
+      () => {
+        this.setState(
+          ({ seconds, isResting }) => ({ seconds: seconds - 1 }),
+          () =>
+            this.state.seconds < 0 &&
+            this.handleStop(
+              this.state.isResting ? this.handleStart : this.handleRest
+            )
+        );
+      }
+    );
+    _defineProperty(
+      this,
+      "handleRest",
+
+      cb => {
+        const callback = typeof cb === "function" ? cb : () => {};
+        this.setState(
+          {
+            seconds: this.props.restSeconds || defaultRestTime,
+            isResting: true,
+            timer: setInterval(this.countDown, 1000)
+          },
+          callback
+        );
+      }
+    );
+    _defineProperty(
+      this,
+      "handleStart",
+
+      cb => {
+        const callback = typeof cb === "function" ? cb : () => {};
+        if (!this.state.timer && this.state.seconds > 0) {
+          this.setState({ timer: setInterval(this.countDown, 1000) }, callback);
+        }
+      }
+    );
+    _defineProperty(
+      this,
+      "handleStop",
+
+      cb => {
+        const callback = typeof cb === "function" ? cb : () => {};
+        clearInterval(this.state.timer);
+        this.setState(this.initialState, callback);
+      }
+    );
+    _defineProperty(
+      this,
+      "handleReset",
+
+      () => {
+        const callback = typeof cb === "function" ? cb : () => {};
+        this.handleStop(this.handleStart);
+      }
+    );
+    this.initialState = {
+      isResting: false,
+      seconds: props.seconds || defaultTime,
+      restSeconds: props.restSeconds || defaultRestTime,
+      timer: null
+    };
+    this.state = this.initialState;
+  }
+
+  render() {
+    const { children } = this.props;
+    return React.createElement(
+      "div",
+      { className: "container" },
+      React.createElement(
+        Time.Provider,
+        {
+          value: {
+            seconds: this.state.seconds,
+            onStart: this.handleStart,
+            onStop: this.handleStop,
+            onReset: this.handleReset,
+            isCountingDown: this.state.timer,
+            isResting: this.state.isResting
+          }
+        },
+
+        children
+      )
+    );
+  }
+}
+
+class App extends React.Component {
+  render() {
+    return React.createElement(
+      Countdown,
+      null,
+      React.createElement(CommandView, null),
+      React.createElement(TimeView, null),
+      React.createElement(
+        "div",
+        { className: "button-container" },
+        React.createElement(StartButton, null),
+        React.createElement(StopButton, null)
+      ),
+
+      React.createElement(
+        "div",
+        { className: "button-container" },
+        React.createElement(ResetButton, null)
+      )
+    );
+  }
+}
+
+ReactDOM.render(React.createElement(App, null), document.querySelector("#app"));
