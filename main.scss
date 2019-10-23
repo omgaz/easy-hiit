@@ -1,22 +1,30 @@
-$color-white:               #fff;
-$color-grey-light:          #f7f7f7;
-$color-grey-mid-light:      #b9b9b9;
-$color-grey-dark:           #7b7b7b;
-$color-black:               #333;
-
+$color-white: #fff;
+$color-grey-light: #f7f7f7;
+$color-grey-mid-light: #b9b9b9;
+$color-grey-dark: #7b7b7b;
+$color-black: #333;
 
 body,
 button {
   padding: 0;
   margin: 0;
   color: $color-black;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-weight: 100;
 }
 
 .time {
   font-size: 10rem;
   white-space: pre;
+  text-align: center;
+}
+
+.command {
+  font-size: 3rem;
+  letter-spacing: 3px;
+  white-space: pre;
+  font-weight: 500;
+  display: block;
   text-align: center;
 }
 
@@ -55,7 +63,16 @@ button {
   outline: none;
 
   &:disabled {
-    background: linear-gradient(-45deg, $color-grey-mid-light 25%, $color-grey-light 25%, $color-grey-light 50%, $color-grey-mid-light 50%, $color-grey-mid-light 75%, $color-grey-light 75%, $color-grey-light);
+    background: linear-gradient(
+      -45deg,
+      $color-grey-mid-light 25%,
+      $color-grey-light 25%,
+      $color-grey-light 50%,
+      $color-grey-mid-light 50%,
+      $color-grey-mid-light 75%,
+      $color-grey-light 75%,
+      $color-grey-light
+    );
     color: $color-grey-dark;
     cursor: not-allowed;
     background-size: 4px 4px;

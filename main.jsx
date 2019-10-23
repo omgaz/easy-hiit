@@ -1,10 +1,13 @@
 const defaultTime = 60;
+const defaultRestTime = 10;
+
 const Time = React.createContext({
   seconds: defaultTime,
   onStart: () => {},
   onStop: () => {},
   onReset: () => {},
-  isCountingDown: false
+  isCountingDown: false,
+  isResting: false
 });
 
 const TimeView = () => (
@@ -14,6 +17,16 @@ const TimeView = () => (
         {seconds < 10 ? "0" : ""}
         {seconds}
         <small>seconds</small>
+      </div>
+    )}
+  </Time.Consumer>
+);
+
+const CommandView = () => (
+  <Time.Consumer>
+    {({ isResting, isCountingDown }) => (
+      <div className="command">
+        {isCountingDown ? (isResting ? "rest" : "work") : "ready?"}
       </div>
     )}
   </Time.Consumer>
@@ -57,7 +70,9 @@ class Countdown extends React.Component {
   constructor(props) {
     super(props);
     this.initialState = {
+      isResting: false,
       seconds: props.seconds || defaultTime,
+      restSeconds: props.restSeconds || defaultRestTime,
       timer: null
     };
     this.state = this.initialState;
@@ -65,8 +80,24 @@ class Countdown extends React.Component {
 
   countDown = () => {
     this.setState(
-      ({ seconds }) => ({ seconds: seconds - 1 }),
-      () => this.state.seconds < 0 && this.handleStop()
+      ({ seconds, isResting }) => ({ seconds: seconds - 1 }),
+      () =>
+        this.state.seconds < 0 &&
+        this.handleStop(
+          this.state.isResting ? this.handleStart : this.handleRest
+        )
+    );
+  };
+
+  handleRest = cb => {
+    const callback = typeof cb === "function" ? cb : () => {};
+    this.setState(
+      {
+        seconds: this.props.restSeconds || defaultRestTime,
+        isResting: true,
+        timer: setInterval(this.countDown, 1000)
+      },
+      callback
     );
   };
 
@@ -98,7 +129,8 @@ class Countdown extends React.Component {
             onStart: this.handleStart,
             onStop: this.handleStop,
             onReset: this.handleReset,
-            isCountingDown: this.state.timer
+            isCountingDown: this.state.timer,
+            isResting: this.state.isResting
           }}
         >
           {children}
@@ -112,6 +144,7 @@ class App extends React.Component {
   render() {
     return (
       <Countdown>
+        <CommandView />
         <TimeView />
         <div className="button-container">
           <StartButton />

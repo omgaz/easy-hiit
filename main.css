@@ -1,1 +1,82 @@
-body,button{padding:0;margin:0;color:#333;font-family:'Roboto', sans-serif;font-weight:100}.time{font-size:10rem;white-space:pre;text-align:center}small{font-size:2rem;display:block}.container{position:absolute;left:50%;top:50%;-webkit-transform:translate(-50%, -50%);transform:translate(-50%, -50%)}.button-container{display:flex;justify-content:space-around;align-content:center;margin:12px auto}.button-container + .button-container{height:0}button{text-align:center;background-color:#fff;border:2px solid #333;font-weight:500;width:80px;height:48px;cursor:pointer;border-radius:48px;outline:none}button:disabled{background:linear-gradient(-45deg, #b9b9b9 25%, #f7f7f7 25%, #f7f7f7 50%, #b9b9b9 50%, #b9b9b9 75%, #f7f7f7 75%, #f7f7f7);color:#7b7b7b;cursor:not-allowed;background-size:4px 4px}button:not(:disabled):hover{box-shadow:0 0 5px #7b7b7b}button:not(:disabled):active{box-shadow:0 0 5px inset #b9b9b9}button:not(:disabled):focus{outline:none}
+body,
+button {
+  padding: 0;
+  margin: 0;
+  color: #333;
+  font-family: "Roboto", sans-serif;
+  font-weight: 100;
+}
+
+.time {
+  font-size: 10rem;
+  white-space: pre;
+  text-align: center;
+}
+
+.command {
+  font-size: 3rem;
+  letter-spacing: 3px;
+  white-space: pre;
+  font-weight: 500;
+  display: block;
+  text-align: center;
+}
+
+small {
+  font-size: 2rem;
+  display: block;
+}
+
+.container {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-around;
+  align-content: center;
+  margin: 12px auto;
+}
+.button-container + .button-container {
+  height: 0;
+}
+
+button {
+  text-align: center;
+  background-color: #fff;
+  border: 2px solid #333;
+  font-weight: 500;
+  width: 80px;
+  height: 48px;
+  cursor: pointer;
+  border-radius: 48px;
+  outline: none;
+}
+button:disabled {
+  background: linear-gradient(
+    -45deg,
+    #b9b9b9 25%,
+    #f7f7f7 25%,
+    #f7f7f7 50%,
+    #b9b9b9 50%,
+    #b9b9b9 75%,
+    #f7f7f7 75%,
+    #f7f7f7
+  );
+  color: #7b7b7b;
+  cursor: not-allowed;
+  background-size: 4px 4px;
+}
+button:not(:disabled):hover {
+  box-shadow: 0 0 5px #7b7b7b;
+}
+button:not(:disabled):active {
+  box-shadow: 0 0 5px inset #b9b9b9;
+}
+button:not(:disabled):focus {
+  outline: none;
+}
